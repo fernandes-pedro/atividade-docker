@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Serviço 1
+  user-service:
+    build: ./user-service
+    networks:
+      - rede-gateway
+
+  # Serviço 2
+  order-service:
+    build: ./order-service
+    networks:
+      - rede-gateway
+
+  # O Gateway (Porteiro)
+  api-gateway:
+    build: ./gateway
+    ports:
+      - "80:80"  # A única porta exposta para o mundo!
+    depends_on:
+      - user-service
+      - order-service
+    networks:
+      - rede-gateway
+
+networks:
+  rede-gateway:
